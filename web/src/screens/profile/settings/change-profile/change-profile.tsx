@@ -41,7 +41,7 @@ export const ChangeProfile: React.FC = () => {
     ""
   );
 
-  const { image, id, ...restUser } = storageService.getUser();
+  const { image, id, name, email, phoneNumber } = storageService.getUser();
 
   const { changeProfile } = ApiChangeProfile();
 
@@ -74,10 +74,20 @@ export const ChangeProfile: React.FC = () => {
     phone_number: "Phone number",
   };
 
+  const placeholderHashMapping: Record<string, string> = {
+    name: name || "Name",
+    email: email || "Email",
+    phone_number: phoneNumber || "Phone number",
+  };
+
   return (
     <OptionsWrapper>
       <Formik
-        initialValues={{}}
+        initialValues={{
+          name,
+          email,
+          phone_number: phoneNumber,
+        }}
         validationSchema={validationSchema}
         onSubmit={handleUpdateUser}
       >
@@ -102,11 +112,11 @@ export const ChangeProfile: React.FC = () => {
                     <InputWrapper key={item}>
                       <StyledLabel>{labelHashMapping[item]}</StyledLabel>
                       <Input
+                        placeholder={placeholderHashMapping[item]}
                         name={item}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         type={"text"}
-                        value={restUser[item]}
                         isWithoutLabel
                       />
                       <StyledError>
